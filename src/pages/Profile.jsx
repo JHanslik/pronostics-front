@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import authService from "../services/authService";
 
 function Profile() {
   const navigate = useNavigate();
@@ -11,63 +12,32 @@ function Profile() {
 
   useEffect(() => {
     // Vérification de l'authentification
-    const isLoggedIn = localStorage.getItem("token");
-    if (!isLoggedIn) {
+    const currentUser = authService.getCurrentUser();
+    if (!currentUser) {
       navigate("/login");
       return;
     }
 
-    // Simulation de chargement des données utilisateur depuis l'API
-    // À remplacer par un appel API réel
-    setTimeout(() => {
-      setUser({
-        username: "utilisateur_test",
-        email: "test@example.com",
-        points: 250,
-        joinDate: "2025-01-15T10:30:00",
-        rank: 12,
-      });
+    // Récupération des données utilisateur
+    const fetchUserData = async () => {
+      try {
+        // À remplacer par un appel API réel
+        // const userData = await userService.getUserProfile();
+        setUser(currentUser);
 
-      setPredictions([
-        {
-          id: 1,
-          matchId: 1,
-          homeTeam: "PSG",
-          awayTeam: "Marseille",
-          date: "2025-03-15T20:00:00",
-          prediction: "home",
-          points: 50,
-          status: "pending",
-          potentialWin: 100,
-        },
-        {
-          id: 2,
-          matchId: 2,
-          homeTeam: "Lyon",
-          awayTeam: "Monaco",
-          date: "2025-03-10T15:00:00",
-          prediction: "away",
-          points: 30,
-          status: "won",
-          potentialWin: 60,
-          pointsWon: 60,
-        },
-        {
-          id: 3,
-          matchId: 3,
-          homeTeam: "Lille",
-          awayTeam: "Lens",
-          date: "2025-03-05T17:00:00",
-          prediction: "draw",
-          points: 20,
-          status: "lost",
-          potentialWin: 40,
-          pointsWon: 0,
-        },
-      ]);
+        // Récupération des pronostics de l'utilisateur
+        // const userPredictions = await predictionService.getUserPredictions();
+        setPredictions([]);
 
-      setLoading(false);
-    }, 1000);
+        setLoading(false);
+      } catch (err) {
+        setError("Erreur lors du chargement du profil");
+        setLoading(false);
+        console.error(err);
+      }
+    };
+
+    fetchUserData();
   }, [navigate]);
 
   const handleTabChange = (tab) => {
@@ -102,7 +72,9 @@ function Profile() {
           <div className="user-card">
             <div className="user-header">
               <h2>{user.username}</h2>
-              <span className="user-rank">Rang #{user.rank}</span>
+              {user.rank && (
+                <span className="user-rank">Rang #{user.rank}</span>
+              )}
             </div>
 
             <div className="user-details">
@@ -110,12 +82,14 @@ function Profile() {
                 <strong>Email:</strong> {user.email}
               </p>
               <p>
-                <strong>Points disponibles:</strong> {user.points}
+                <strong>Points disponibles:</strong> {user.points || 0}
               </p>
-              <p>
-                <strong>Membre depuis:</strong>{" "}
-                {new Date(user.joinDate).toLocaleDateString("fr-FR")}
-              </p>
+              {user.joinDate && (
+                <p>
+                  <strong>Membre depuis:</strong>{" "}
+                  {new Date(user.joinDate).toLocaleDateString("fr-FR")}
+                </p>
+              )}
             </div>
 
             <button className="edit-profile-btn">Modifier mon profil</button>
@@ -133,7 +107,7 @@ function Profile() {
             <div className="predictions-list">
               {predictions.map((pred) => (
                 <div
-                  key={pred.id}
+                  key={pred._id}
                   className={`prediction-card ${
                     pred.status === "won"
                       ? "won"
@@ -144,10 +118,10 @@ function Profile() {
                 >
                   <div className="prediction-match">
                     <span>
-                      {pred.homeTeam} vs {pred.awayTeam}
+                      {pred.match.homeTeam} vs {pred.match.awayTeam}
                     </span>
                     <span className="prediction-date">
-                      {new Date(pred.date).toLocaleDateString("fr-FR")}
+                      {new Date(pred.match.date).toLocaleDateString("fr-FR")}
                     </span>
                   </div>
 
@@ -155,16 +129,16 @@ function Profile() {
                     <p>
                       <strong>Pronostic:</strong>{" "}
                       {pred.prediction === "home"
-                        ? `Victoire ${pred.homeTeam}`
+                        ? `Victoire ${pred.match.homeTeam}`
                         : pred.prediction === "away"
-                        ? `Victoire ${pred.awayTeam}`
+                        ? `Victoire ${pred.match.awayTeam}`
                         : "Match nul"}
                     </p>
                     <p>
                       <strong>Points misés:</strong> {pred.points}
                     </p>
                     <p>
-                      <strong>Gain potentiel:</strong> {pred.potentialWin}
+                      <strong>Gain potentiel:</strong> {pred.points * 2}
                     </p>
 
                     {pred.status === "pending" && (

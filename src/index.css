@@ -508,3 +508,356 @@ body {
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+/* Header styles for logged-in users */
+.header .user-points {
+  background-color: #f0f4f8;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  margin-right: 1rem;
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+.header .dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.header .dropdown-toggle {
+  background-color: #3498db;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+}
+
+.header .dropdown-toggle .arrow {
+  font-size: 0.8rem;
+  transition: transform 0.2s;
+}
+
+.header .dropdown:hover .arrow {
+  transform: rotate(180deg);
+}
+
+.header .dropdown-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  background-color: white;
+  min-width: 180px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.header .dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.header .dropdown-menu a,
+.header .dropdown-menu button {
+  color: #333;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+  width: 100%;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.header .dropdown-menu a:hover,
+.header .dropdown-menu button:hover {
+  background-color: #f1f1f1;
+  color: #3498db;
+}
+
+.header .dropdown-menu .logout-btn {
+  border-top: 1px solid #eee;
+  color: #e74c3c;
+}
+
+.header .dropdown-menu .logout-btn:hover {
+  background-color: #fee;
+}
+
+.header .login-btn,
+.header .register-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.header .login-btn {
+  background-color: transparent;
+  border: 1px solid #3498db;
+  color: #3498db;
+}
+
+.header .register-btn {
+  background-color: #3498db;
+  color: white;
+}
+
+.header .login-btn:hover {
+  background-color: #eef7fd;
+}
+
+.header .register-btn:hover {
+  background-color: #2980b9;
+}
+
+/* Authentication Forms */
+.auth-container {
+  max-width: 450px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.auth-container h1 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #2c3e50;
+}
+
+.auth-form .form-group {
+  margin-bottom: 1.5rem;
+}
+
+.auth-form label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+.auth-form input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.auth-form input:focus {
+  border-color: #3498db;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.auth-form .submit-btn {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.auth-form .submit-btn:hover {
+  background-color: #2980b9;
+}
+
+.auth-form .submit-btn:disabled {
+  background-color: #95a5a6;
+  cursor: not-allowed;
+}
+
+.auth-links {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.auth-links a {
+  color: #3498db;
+  text-decoration: none;
+}
+
+.auth-links a:hover {
+  text-decoration: underline;
+}
+
+.error-message {
+  background-color: #fee;
+  color: #e74c3c;
+  padding: 0.75rem;
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+/* Styles pour la page des pronostics */
+.my-predictions-page {
+  padding: 1rem 0;
+}
+
+.my-predictions-page h1 {
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: var(--primary-color);
+}
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #eee;
+}
+
+.tab-btn {
+  padding: 0.75rem 1.5rem;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  font-size: 1rem;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tab-btn:hover {
+  color: var(--primary-color);
+}
+
+.tab-btn.active {
+  color: var(--primary-color);
+  border-bottom-color: var(--primary-color);
+  font-weight: 500;
+}
+
+.no-predictions {
+  text-align: center;
+  padding: 2rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+.no-predictions p {
+  margin-bottom: 1rem;
+  color: #666;
+}
+
+.action-btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--primary-color);
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.action-btn:hover {
+  background-color: var(--primary-dark);
+}
+
+.predictions-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.prediction-card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.2s;
+}
+
+.prediction-card:hover {
+  transform: translateY(-5px);
+}
+
+.prediction-card.won {
+  border-left: 4px solid #4caf50;
+}
+
+.prediction-card.lost {
+  border-left: 4px solid #f44336;
+}
+
+.prediction-card.pending {
+  border-left: 4px solid #ff9800;
+}
+
+.match-info {
+  padding: 1rem;
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #eee;
+}
+
+.match-info h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.match-date {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 0.5rem;
+}
+
+.prediction-details {
+  padding: 1rem;
+}
+
+.prediction-details p {
+  margin: 0.5rem 0;
+}
+
+.status {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-top: 0.5rem;
+}
+
+.status.pending {
+  background-color: #fff3e0;
+  color: #e65100;
+}
+
+.status.won {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status.lost {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+.match-link {
+  display: block;
+  padding: 0.75rem 1rem;
+  text-align: center;
+  background-color: #f5f5f5;
+  color: var(--primary-color);
+  text-decoration: none;
+  border-top: 1px solid #eee;
+  transition: background-color 0.2s;
+}
+
+.match-link:hover {
+  background-color: #e0e0e0;
+}

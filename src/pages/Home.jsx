@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import matchService from "../services/matchService";
 
 function Home() {
   const [matches, setMatches] = useState([]);
@@ -7,42 +8,32 @@ function Home() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Simulation de chargement des matchs depuis l'API
-    // À remplacer par un appel API réel
-    setTimeout(() => {
-      setMatches([
-        {
-          id: 1,
-          homeTeam: "PSG",
-          awayTeam: "Marseille",
-          date: "2025-03-15T20:00:00",
-        },
-        {
-          id: 2,
-          homeTeam: "Lyon",
-          awayTeam: "Monaco",
-          date: "2025-03-16T15:00:00",
-        },
-        {
-          id: 3,
-          homeTeam: "Lille",
-          awayTeam: "Lens",
-          date: "2025-03-16T17:00:00",
-        },
-      ]);
-      setLoading(false);
-    }, 1000);
+    // Récupération des matchs depuis l'API
+    const fetchMatches = async () => {
+      try {
+        const data = await matchService.getMatches();
+        setMatches(data);
+        setLoading(false);
+      } catch (err) {
+        setError("Erreur lors du chargement des matchs");
+        setLoading(false);
+        console.error(err);
+      }
+    };
+
+    fetchMatches();
   }, []);
 
   if (loading) return <div>Chargement des matchs...</div>;
   if (error) return <div>Erreur: {error}</div>;
+  if (matches.length === 0) return <div>Aucun match à venir</div>;
 
   return (
     <div className="home-page">
       <h1>Matchs à venir</h1>
       <div className="matches-list">
         {matches.map((match) => (
-          <div key={match.id} className="match-card">
+          <div key={match._id} className="match-card">
             <div className="match-teams">
               <span className="home-team">{match.homeTeam}</span>
               <span className="vs">vs</span>
@@ -51,7 +42,7 @@ function Home() {
             <div className="match-date">
               {new Date(match.date).toLocaleString("fr-FR")}
             </div>
-            <Link to={`/match/${match.id}`} className="match-link">
+            <Link to={`/match/${match._id}`} className="match-link">
               Voir détails
             </Link>
           </div>

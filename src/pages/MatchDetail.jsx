@@ -1,5 +1,9 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import matchService from "../services/matchService";
+import authService from "../services/authService";
+import predictionService from "../services/predictionService";
+import userService from "../services/userService";
 
 function MatchDetail() {
   const { id } = useParams();
@@ -9,36 +13,30 @@ function MatchDetail() {
   const [error, setError] = useState(null);
   const [prediction, setPrediction] = useState("");
   const [points, setPoints] = useState(10);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // À remplacer par un contexte d'authentification
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    // Simulation de chargement des détails du match depuis l'API
-    // À remplacer par un appel API réel
-    setTimeout(() => {
-      // Vérifier si l'ID est valide
-      if (id > 0 && id < 4) {
-        const matchData = {
-          id: parseInt(id),
-          homeTeam: ["PSG", "Lyon", "Lille"][id - 1],
-          awayTeam: ["Marseille", "Monaco", "Lens"][id - 1],
-          date: [
-            "2025-03-15T20:00:00",
-            "2025-03-16T15:00:00",
-            "2025-03-16T17:00:00",
-          ][id - 1],
-          stadium: ["Parc des Princes", "Groupama Stadium", "Pierre-Mauroy"][
-            id - 1
-          ],
-          league: "Ligue 1",
-          status: "À venir",
-        };
-        setMatch(matchData);
+    // Vérification de l'authentification
+    const checkAuth = () => {
+      const user = authService.getCurrentUser();
+      setIsLoggedIn(!!user);
+    };
+
+    // Récupération des détails du match
+    const fetchMatchDetails = async () => {
+      try {
+        const data = await matchService.getMatchById(id);
+        setMatch(data);
         setLoading(false);
-      } else {
+      } catch (err) {
         setError("Match non trouvé");
         setLoading(false);
+        console.error(err);
       }
-    }, 1000);
+    };
+
+    checkAuth();
+    fetchMatchDetails();
   }, [id]);
 
   const handlePredictionChange = (e) => {
@@ -49,7 +47,7 @@ function MatchDetail() {
     setPoints(parseInt(e.target.value));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!isLoggedIn) {
@@ -57,19 +55,33 @@ function MatchDetail() {
       return;
     }
 
-    // Simulation d'envoi de pronostic
-    // À remplacer par un appel API réel
-    console.log("Pronostic soumis:", {
-      matchId: match.id,
-      prediction,
-      points,
-    });
+    try {
+      // Appel API pour créer un pronostic
+      await predictionService.createPrediction({
+        matchId: match._id,
+        prediction,
+        pointsBet: points,
+      });
 
-    alert("Votre pronostic a été enregistré !");
+      // Mettre à jour les informations utilisateur
+      await authService.updateUserInfo();
+
+      alert("Votre pronostic a été enregistré !");
+
+      // Rediriger vers la page des pronostics
+      navigate("/my-predictions");
+    } catch (err) {
+      alert(
+        "Erreur lors de l'enregistrement du pronostic: " +
+          (err.response?.data?.message || err.message)
+      );
+      console.error(err);
+    }
   };
 
   if (loading) return <div>Chargement des détails du match...</div>;
   if (error) return <div>Erreur: {error}</div>;
+  if (!match) return <div>Match non trouvé</div>;
 
   return (
     <div className="match-detail-page">
@@ -84,9 +96,9 @@ function MatchDetail() {
           </div>
           <div className="match-meta">
             <p>Date: {new Date(match.date).toLocaleString("fr-FR")}</p>
-            <p>Stade: {match.stadium}</p>
-            <p>Compétition: {match.league}</p>
-            <p>Statut: {match.status}</p>
+            <p>Stade: {match.stadium || "Non spécifié"}</p>
+            <p>Compétition: {match.league || "Non spécifiée"}</p>
+            <p>Statut: {match.status || "À venir"}</p>
           </div>
         </div>
 

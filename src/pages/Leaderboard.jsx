@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import api from "../services/api";
 
 function Leaderboard() {
   const [users, setUsers] = useState([]);
@@ -8,29 +9,20 @@ function Leaderboard() {
   const [usersPerPage] = useState(10);
 
   useEffect(() => {
-    // Simulation de chargement du classement depuis l'API
-    // À remplacer par un appel API réel
-    setTimeout(() => {
-      // Génération de données de test
-      const testUsers = Array.from({ length: 50 }, (_, i) => ({
-        id: i + 1,
-        username: `user${i + 1}`,
-        points: Math.floor(Math.random() * 1000) + 100,
-        winCount: Math.floor(Math.random() * 50),
-        totalPredictions: Math.floor(Math.random() * 100) + 10,
-      }));
+    // Récupération du classement depuis l'API
+    const fetchLeaderboard = async () => {
+      try {
+        const response = await api.get("/users/leaderboard");
+        setUsers(response.data);
+        setLoading(false);
+      } catch (err) {
+        setError("Erreur lors du chargement du classement");
+        setLoading(false);
+        console.error(err);
+      }
+    };
 
-      // Tri par points décroissants
-      testUsers.sort((a, b) => b.points - a.points);
-
-      // Ajout du rang
-      testUsers.forEach((user, index) => {
-        user.rank = index + 1;
-      });
-
-      setUsers(testUsers);
-      setLoading(false);
-    }, 1000);
+    fetchLeaderboard();
   }, []);
 
   // Pagination
@@ -43,6 +35,7 @@ function Leaderboard() {
 
   if (loading) return <div>Chargement du classement...</div>;
   if (error) return <div>Erreur: {error}</div>;
+  if (users.length === 0) return <div>Aucun utilisateur trouvé</div>;
 
   return (
     <div className="leaderboard-page">
@@ -61,22 +54,22 @@ function Leaderboard() {
             </tr>
           </thead>
           <tbody>
-            {currentUsers.map((user) => (
-              <tr key={user.id} className={user.rank <= 3 ? "top-rank" : ""}>
+            {currentUsers.map((user, index) => (
+              <tr key={user._id} className={index < 3 ? "top-rank" : ""}>
                 <td className="rank">
-                  {user.rank === 1 && "🥇"}
-                  {user.rank === 2 && "🥈"}
-                  {user.rank === 3 && "🥉"}
-                  {user.rank > 3 && user.rank}
+                  {index === 0 && "🥇"}
+                  {index === 1 && "🥈"}
+                  {index === 2 && "🥉"}
+                  {index > 2 && indexOfFirstUser + index + 1}
                 </td>
                 <td>{user.username}</td>
                 <td className="points">{user.points}</td>
-                <td>{user.winCount}</td>
-                <td>{user.totalPredictions}</td>
+                <td>{user.winCount || 0}</td>
+                <td>{user.totalPredictions || 0}</td>
                 <td>
                   {user.totalPredictions > 0
                     ? `${Math.round(
-                        (user.winCount / user.totalPredictions) * 100
+                        ((user.winCount || 0) / user.totalPredictions) * 100
                       )}%`
                     : "0%"}
                 </td>

@@ -8,12 +8,12 @@ const api = axios.create({
   },
 });
 
-// Intercepteur pour ajouter le token d'authentification aux requêtes
+// Intercepteur pour ajouter le token à chaque requête
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("auth_token");
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers["Authorization"] = `Bearer ${token}`;
     }
     return config;
   },
@@ -22,14 +22,20 @@ api.interceptors.request.use(
   }
 );
 
-// Intercepteur pour gérer les erreurs de réponse
+// Intercepteur pour gérer les erreurs d'authentification
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    // Gestion des erreurs 401 (non autorisé)
     if (error.response && error.response.status === 401) {
-      localStorage.removeItem("token");
-      window.location.href = "/login";
+      // Token expiré ou invalide
+      localStorage.removeItem("auth_token");
+      localStorage.removeItem("user_info");
+      window.dispatchEvent(new Event("auth-change"));
+
+      // Rediriger vers la page de connexion si nécessaire
+      if (window.location.pathname !== "/login") {
+        window.location.href = "/login";
+      }
     }
     return Promise.reject(error);
   }
