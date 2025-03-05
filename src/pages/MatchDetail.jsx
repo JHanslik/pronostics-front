@@ -119,7 +119,9 @@ function MatchDetail() {
           </div>
         </div>
 
-        <AIPrediction matchId={match._id} />
+        <div className="ai-prediction-container" style={{ width: "100%" }}>
+          <AIPrediction matchId={match._id} />
+        </div>
 
         <div className="prediction-section">
           <h2>Faire un pronostic</h2>
