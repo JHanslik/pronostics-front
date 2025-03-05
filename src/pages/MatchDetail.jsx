@@ -95,7 +95,23 @@ function MatchDetail() {
             <span className="away-team">{match.awayTeam}</span>
           </div>
           <div className="match-meta">
-            <p>Date: {new Date(match.date).toLocaleString("fr-FR")}</p>
+            <p>
+              Date:
+              <span className="match-day">
+                {new Date(match.startTime).toLocaleDateString("fr-FR", {
+                  weekday: "long",
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                })}
+              </span>
+              <span className="match-time">
+                {new Date(match.startTime).toLocaleTimeString("fr-FR", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </span>
+            </p>
             <p>Stade: {match.stadium || "Non spécifié"}</p>
             <p>Compétition: {match.league || "Non spécifiée"}</p>
             <p>Statut: {match.status || "À venir"}</p>

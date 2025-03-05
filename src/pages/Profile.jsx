@@ -87,7 +87,11 @@ function Profile() {
               {user.joinDate && (
                 <p>
                   <strong>Membre depuis:</strong>{" "}
-                  {new Date(user.joinDate).toLocaleDateString("fr-FR")}
+                  {new Date(user.joinDate).toLocaleDateString("fr-FR", {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                  })}
                 </p>
               )}
             </div>
@@ -121,7 +125,14 @@ function Profile() {
                       {pred.match.homeTeam} vs {pred.match.awayTeam}
                     </span>
                     <span className="prediction-date">
-                      {new Date(pred.match.date).toLocaleDateString("fr-FR")}
+                      {new Date(
+                        pred.match.startTime || pred.match.date
+                      ).toLocaleDateString("fr-FR", {
+                        weekday: "long",
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                      })}
                     </span>
                   </div>
 

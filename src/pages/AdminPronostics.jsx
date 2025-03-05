@@ -132,7 +132,21 @@ function AdminPronostics() {
                   </div>
 
                   <div className="match-date">
-                    Joué le: {new Date(match.startTime).toLocaleString("fr-FR")}
+                    Joué le:
+                    <span className="match-day">
+                      {new Date(match.startTime).toLocaleDateString("fr-FR", {
+                        weekday: "long",
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                      })}
+                    </span>
+                    <span className="match-time">
+                      {new Date(match.startTime).toLocaleTimeString("fr-FR", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </span>
                   </div>
 
                   <button
@@ -164,9 +178,18 @@ function AdminPronostics() {
                 >
                   <div className="processed-status">
                     <span className="processed-badge">Traité</span>
-                    <span className="processed-date">
-                      {new Date(match.processedAt).toLocaleString("fr-FR")}
-                    </span>
+                    <div className="processed-date">
+                      {new Date(match.processedAt).toLocaleDateString("fr-FR", {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                      })}{" "}
+                      à{" "}
+                      {new Date(match.processedAt).toLocaleTimeString("fr-FR", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </div>
                   </div>
 
                   <div className="match-teams">
@@ -191,7 +214,21 @@ function AdminPronostics() {
                   </div>
 
                   <div className="match-date">
-                    Joué le: {new Date(match.startTime).toLocaleString("fr-FR")}
+                    Joué le:
+                    <span className="match-day">
+                      {new Date(match.startTime).toLocaleDateString("fr-FR", {
+                        weekday: "long",
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                      })}
+                    </span>
+                    <span className="match-time">
+                      {new Date(match.startTime).toLocaleTimeString("fr-FR", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </span>
                   </div>
                 </div>
               ))}

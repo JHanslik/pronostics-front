@@ -115,9 +115,24 @@ function MyPredictions() {
                   {prediction.match.homeTeam} vs {prediction.match.awayTeam}
                 </h3>
                 <p className="match-date">
-                  {new Date(
-                    prediction.match.date || prediction.match.startTime
-                  ).toLocaleString("fr-FR")}
+                  <span className="match-day">
+                    {new Date(
+                      prediction.match.startTime || prediction.match.date
+                    ).toLocaleDateString("fr-FR", {
+                      weekday: "long",
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    })}
+                  </span>
+                  <span className="match-time">
+                    {new Date(
+                      prediction.match.startTime || prediction.match.date
+                    ).toLocaleTimeString("fr-FR", {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </span>
                 </p>
               </div>
 

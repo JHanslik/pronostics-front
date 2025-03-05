@@ -40,7 +40,20 @@ function Home() {
               <span className="away-team">{match.awayTeam}</span>
             </div>
             <div className="match-date">
-              {new Date(match.date).toLocaleString("fr-FR")}
+              <div className="match-day">
+                {new Date(match.startTime).toLocaleDateString("fr-FR", {
+                  weekday: "long",
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                })}
+              </div>
+              <div className="match-time">
+                {new Date(match.startTime).toLocaleTimeString("fr-FR", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </div>
             </div>
             <Link to={`/match/${match._id}`} className="match-link">
               Voir détails
