@@ -1,0 +1,194 @@
+.ai-advanced-prediction {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.ai-advanced-prediction h3 {
+  margin-top: 0;
+  color: #343a40;
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+}
+
+.prediction-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.generate-button {
+  background-color: #4c6ef5;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.generate-button:hover {
+  background-color: #3b5bdb;
+}
+
+.generate-button:disabled {
+  background-color: #adb5bd;
+  cursor: not-allowed;
+}
+
+.loading-spinner,
+.error-message,
+.no-predictions {
+  text-align: center;
+  padding: 20px;
+  color: #6c757d;
+  font-style: italic;
+}
+
+.error-message {
+  color: #e74c3c;
+}
+
+.predictions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.prediction-card {
+  background-color: white;
+  border-radius: 6px;
+  padding: 15px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.prediction-model {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 0.9rem;
+}
+
+.model-name {
+  font-weight: 600;
+  color: #343a40;
+}
+
+.model-accuracy {
+  color: #6c757d;
+}
+
+.prediction-probabilities {
+  margin-bottom: 15px;
+}
+
+.probability-bar {
+  display: flex;
+  height: 30px;
+  border-radius: 4px;
+  overflow: hidden;
+  background-color: #e9ecef;
+}
+
+.probability {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: width 0.3s ease;
+}
+
+.probability.home {
+  background-color: #4c6ef5;
+}
+
+.probability.draw {
+  background-color: #adb5bd;
+}
+
+.probability.away {
+  background-color: #fa5252;
+}
+
+.high-probability {
+  opacity: 1;
+}
+
+.medium-probability {
+  opacity: 0.8;
+}
+
+.low-probability {
+  opacity: 0.6;
+}
+
+.prediction-result,
+.actual-result {
+  margin-bottom: 12px;
+  padding: 10px;
+  border-radius: 4px;
+  background-color: #f1f3f5;
+}
+
+.result-label {
+  font-size: 0.85rem;
+  color: #6c757d;
+  margin-bottom: 5px;
+}
+
+.result {
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 5px;
+}
+
+.result.home-win {
+  color: #4c6ef5;
+}
+
+.result.away-win {
+  color: #fa5252;
+}
+
+.result.draw {
+  color: #adb5bd;
+}
+
+.confidence {
+  font-size: 0.85rem;
+  color: #6c757d;
+}
+
+.prediction-accuracy {
+  font-size: 0.85rem;
+  margin-top: 5px;
+}
+
+.prediction-accuracy.correct {
+  color: #40c057;
+}
+
+.prediction-accuracy.incorrect {
+  color: #fa5252;
+}
+
+.actual-result .result.correct {
+  color: #40c057;
+}
+
+.actual-result .result.incorrect {
+  color: #fa5252;
+}
+
+.prediction-timestamp {
+  font-size: 0.8rem;
+  color: #adb5bd;
+  text-align: right;
+  margin-top: 10px;
+}

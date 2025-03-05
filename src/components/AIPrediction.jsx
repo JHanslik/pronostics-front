@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import predictionService from "../services/predictionService";
+import "./AIPrediction.css";
 
 function AIPrediction({ matchId }) {
   const [prediction, setPrediction] = useState(null);
@@ -12,7 +13,15 @@ function AIPrediction({ matchId }) {
       try {
         setLoading(true);
         const data = await predictionService.getAIPrediction(matchId);
-        setPrediction(data);
+
+        if (data && data.success) {
+          setPrediction(data);
+        } else {
+          setError(
+            data?.message || "Erreur lors du chargement de la prédiction"
+          );
+        }
+
         setLoading(false);
       } catch (err) {
         setError("Erreur lors du chargement de la prédiction");
@@ -49,212 +58,255 @@ function AIPrediction({ matchId }) {
     });
   };
 
-  // Obtenir la classe CSS pour le résultat (V/N/D)
+  // Formater le pourcentage
+  const formatPercentage = (value) => {
+    if (value === undefined || value === null) return "0.0%";
+    return (value * 100).toFixed(1) + "%";
+  };
+
+  // Formater la largeur pour le CSS
+  const formatWidth = (value) => {
+    if (value === undefined || value === null) return "0%";
+    // Minimum 5% pour la visibilité
+    return Math.max(5, value * 100) + "%";
+  };
+
+  // Obtenir la classe CSS en fonction de la probabilité
+  const getProbabilityClass = (value) => {
+    if (!value) return "low-probability";
+    if (value >= 0.6) return "high-probability";
+    if (value >= 0.4) return "medium-probability";
+    return "low-probability";
+  };
+
+  // Obtenir la classe CSS en fonction du résultat prédit
   const getResultClass = (result) => {
     switch (result) {
-      case "V":
-        return "win";
-      case "N":
+      case "home":
+        return "home-win";
+      case "away":
+        return "away-win";
+      case "draw":
         return "draw";
-      case "D":
-        return "loss";
       default:
         return "";
     }
   };
 
+  // Obtenir la classe CSS en fonction de la qualité des données
+  const getDataQualityClass = (quality) => {
+    switch (quality) {
+      case "high":
+        return "high-quality";
+      case "medium":
+        return "medium-quality";
+      case "low":
+        return "low-quality";
+      default:
+        return "";
+    }
+  };
+
+  // Obtenir le texte en fonction de la qualité des données
+  const getDataQualityText = (quality) => {
+    switch (quality) {
+      case "high":
+        return "Haute";
+      case "medium":
+        return "Moyenne";
+      case "low":
+        return "Faible";
+      default:
+        return "Inconnue";
+    }
+  };
+
   return (
     <div className="ai-prediction">
-      <h3>Prédiction IA</h3>
-
-      <div className="prediction-probabilities">
-        <div className="probability-bar">
-          <div
-            className="home-win"
-            style={{ width: `${homeWinProbability}%` }}
-            title={`${homeTeam}: ${homeWinProbability}%`}
-          >
-            {homeWinProbability}%
-          </div>
-          <div
-            className="draw"
-            style={{ width: `${drawProbability}%` }}
-            title={`Match nul: ${drawProbability}%`}
-          >
-            {drawProbability}%
-          </div>
-          <div
-            className="away-win"
-            style={{ width: `${awayWinProbability}%` }}
-            title={`${awayTeam}: ${awayWinProbability}%`}
-          >
-            {awayWinProbability}%
-          </div>
-        </div>
-
-        <div className="prediction-labels">
-          <span>{homeTeam}</span>
-          <span>Nul</span>
-          <span>{awayTeam}</span>
+      <div className="prediction-header">
+        <h3>Prédiction IA</h3>
+        <div className={`data-quality ${getDataQualityClass(dataQuality)}`}>
+          Fiabilité: {getDataQualityText(dataQuality)}
         </div>
       </div>
 
-      <div className="prediction-details">
-        <p className="predicted-score">
-          Score prédit:{" "}
-          <strong>
-            {predictedScore.home} - {predictedScore.away}
-          </strong>
-        </p>
+      <div className="prediction-content">
+        <div className="teams">
+          <div className="team home-team">{homeTeam}</div>
+          <div className="vs">VS</div>
+          <div className="team away-team">{awayTeam}</div>
+        </div>
 
-        <p className="prediction-result">
-          Résultat le plus probable:
-          <strong>
-            {mostLikelyResult === "home" && ` Victoire ${homeTeam}`}
-            {mostLikelyResult === "away" && ` Victoire ${awayTeam}`}
-            {mostLikelyResult === "draw" && " Match nul"}
-          </strong>
-          <span className="confidence"> (Confiance: {confidence}%)</span>
-        </p>
-
-        <div className="data-quality">
-          <div className="quality-indicator" title="Qualité des données">
-            <div className="quality-bar">
-              <div
-                className="quality-fill"
-                style={{ width: `${dataQuality.confidence}%` }}
-              ></div>
+        <div className="probabilities">
+          <div className="probability-bar">
+            <div
+              className={`probability home ${getProbabilityClass(
+                homeWinProbability
+              )}`}
+              style={{ width: formatWidth(homeWinProbability) }}
+            >
+              {formatPercentage(homeWinProbability)}
             </div>
-            <span>Qualité des données: {dataQuality.confidence}%</span>
+            <div
+              className={`probability draw ${getProbabilityClass(
+                drawProbability
+              )}`}
+              style={{ width: formatWidth(drawProbability) }}
+            >
+              {formatPercentage(drawProbability)}
+            </div>
+            <div
+              className={`probability away ${getProbabilityClass(
+                awayWinProbability
+              )}`}
+              style={{ width: formatWidth(awayWinProbability) }}
+            >
+              {formatPercentage(awayWinProbability)}
+            </div>
+          </div>
+          <div className="probability-labels">
+            <div className="label">Victoire {homeTeam}</div>
+            <div className="label">Match nul</div>
+            <div className="label">Victoire {awayTeam}</div>
           </div>
         </div>
-      </div>
 
-      <button
-        className="toggle-details-btn"
-        onClick={() => setShowDetails(!showDetails)}
-      >
-        {showDetails ? "Masquer les détails" : "Afficher les détails"}
-      </button>
-
-      {showDetails && (
-        <div className="prediction-stats">
-          <div className="stats-section">
-            <h4>Forme récente: {homeTeam}</h4>
-            <div className="recent-matches">
-              {prediction.stats.homeTeam.recentMatches.map((match, index) => (
-                <div key={index} className="recent-match">
-                  <span className="match-date">{formatDate(match.date)}</span>
-                  <span className="match-teams">
-                    {match.isHome ? homeTeam : match.opponent} vs{" "}
-                    {match.isHome ? match.opponent : homeTeam}
-                  </span>
-                  <span className="match-score">{match.score}</span>
-                  <span
-                    className={`match-result ${getResultClass(match.result)}`}
-                  >
-                    {match.result}
-                  </span>
-                </div>
-              ))}
-              {prediction.stats.homeTeam.recentMatches.length === 0 && (
-                <p className="no-data">Aucune donnée disponible</p>
-              )}
-            </div>
+        <div className="prediction-result">
+          <div className="result-label">Résultat prédit:</div>
+          <div className={`result ${getResultClass(mostLikelyResult)}`}>
+            {mostLikelyResult === "home"
+              ? `Victoire ${homeTeam}`
+              : mostLikelyResult === "away"
+              ? `Victoire ${awayTeam}`
+              : "Match nul"}
           </div>
-
-          <div className="stats-section">
-            <h4>Forme récente: {awayTeam}</h4>
-            <div className="recent-matches">
-              {prediction.stats.awayTeam.recentMatches.map((match, index) => (
-                <div key={index} className="recent-match">
-                  <span className="match-date">{formatDate(match.date)}</span>
-                  <span className="match-teams">
-                    {match.isHome ? awayTeam : match.opponent} vs{" "}
-                    {match.isHome ? match.opponent : awayTeam}
-                  </span>
-                  <span className="match-score">{match.score}</span>
-                  <span
-                    className={`match-result ${getResultClass(match.result)}`}
-                  >
-                    {match.result}
-                  </span>
-                </div>
-              ))}
-              {prediction.stats.awayTeam.recentMatches.length === 0 && (
-                <p className="no-data">Aucune donnée disponible</p>
-              )}
-            </div>
-          </div>
-
-          <div className="stats-section">
-            <h4>Confrontations directes</h4>
-            <div className="h2h-matches">
-              {prediction.stats.headToHead.recentMatches.map((match, index) => (
-                <div key={index} className="h2h-match">
-                  <span className="match-date">{formatDate(match.date)}</span>
-                  <span className="match-score">
-                    <strong>{homeTeam}</strong> {match.homeTeamScore} -{" "}
-                    {match.awayTeamScore} <strong>{awayTeam}</strong>
-                  </span>
-                  <span className={`match-result ${match.result}`}>
-                    {match.result === "home"
-                      ? `Victoire ${homeTeam}`
-                      : match.result === "away"
-                      ? `Victoire ${awayTeam}`
-                      : "Match nul"}
-                  </span>
-                </div>
-              ))}
-              {prediction.stats.headToHead.recentMatches.length === 0 && (
-                <p className="no-data">Aucune confrontation directe récente</p>
-              )}
-            </div>
-          </div>
-
-          <div className="stats-summary">
-            <div className="team-stats">
-              <h4>{homeTeam}</h4>
-              <p>Matchs joués: {prediction.stats.homeTeam.played}</p>
-              <p>
-                Victoires: {prediction.stats.homeTeam.wins} (
-                {Math.round(prediction.stats.homeTeam.winRate * 100)}%)
-              </p>
-              <p>
-                Buts marqués/match:{" "}
-                {prediction.stats.homeTeam.averageGoalsScored.toFixed(1)}
-              </p>
-              <p>
-                Buts encaissés/match:{" "}
-                {prediction.stats.homeTeam.averageGoalsConceded.toFixed(1)}
-              </p>
-            </div>
-
-            <div className="team-stats">
-              <h4>{awayTeam}</h4>
-              <p>Matchs joués: {prediction.stats.awayTeam.played}</p>
-              <p>
-                Victoires: {prediction.stats.awayTeam.wins} (
-                {Math.round(prediction.stats.awayTeam.winRate * 100)}%)
-              </p>
-              <p>
-                Buts marqués/match:{" "}
-                {prediction.stats.awayTeam.averageGoalsScored.toFixed(1)}
-              </p>
-              <p>
-                Buts encaissés/match:{" "}
-                {prediction.stats.awayTeam.averageGoalsConceded.toFixed(1)}
-              </p>
-            </div>
+          <div className="predicted-score">
+            Score prédit: {predictedScore.home} - {predictedScore.away}
           </div>
         </div>
-      )}
 
-      <div className="prediction-disclaimer">
-        <small>
-          Cette prédiction est basée sur les performances passées des équipes et
-          ne garantit pas le résultat final.
-        </small>
+        <button
+          className="details-toggle"
+          onClick={() => setShowDetails(!showDetails)}
+        >
+          {showDetails ? "Masquer les détails" : "Afficher les détails"}
+        </button>
+
+        {showDetails && (
+          <div className="prediction-details">
+            <div className="details-section">
+              <h4>Statistiques {homeTeam}</h4>
+              {prediction.stats && prediction.stats.home ? (
+                <>
+                  <div className="stat-item">
+                    <span className="stat-label">Taux de victoire:</span>
+                    <span className="stat-value">
+                      {formatPercentage(prediction.stats.home.winRate)}
+                    </span>
+                  </div>
+                  <div className="stat-item">
+                    <span className="stat-label">Buts marqués (moy.):</span>
+                    <span className="stat-value">
+                      {prediction.stats.home.avgGoalsScored !== undefined
+                        ? prediction.stats.home.avgGoalsScored.toFixed(1)
+                        : "0.0"}
+                    </span>
+                  </div>
+                  <div className="stat-item">
+                    <span className="stat-label">Buts concédés (moy.):</span>
+                    <span className="stat-value">
+                      {prediction.stats.home.avgGoalsConceded !== undefined
+                        ? prediction.stats.home.avgGoalsConceded.toFixed(1)
+                        : "0.0"}
+                    </span>
+                  </div>
+                  <div className="stat-item">
+                    <span className="stat-label">Matchs analysés:</span>
+                    <span className="stat-value">
+                      {prediction.stats.home.matchesPlayed || 0}
+                    </span>
+                  </div>
+                </>
+              ) : (
+                <div className="no-data">Aucune donnée disponible</div>
+              )}
+            </div>
+
+            <div className="details-section">
+              <h4>Statistiques {awayTeam}</h4>
+              {prediction.stats && prediction.stats.away ? (
+                <>
+                  <div className="stat-item">
+                    <span className="stat-label">Taux de victoire:</span>
+                    <span className="stat-value">
+                      {formatPercentage(prediction.stats.away.winRate)}
+                    </span>
+                  </div>
+                  <div className="stat-item">
+                    <span className="stat-label">Buts marqués (moy.):</span>
+                    <span className="stat-value">
+                      {prediction.stats.away.avgGoalsScored !== undefined
+                        ? prediction.stats.away.avgGoalsScored.toFixed(1)
+                        : "0.0"}
+                    </span>
+                  </div>
+                  <div className="stat-item">
+                    <span className="stat-label">Buts concédés (moy.):</span>
+                    <span className="stat-value">
+                      {prediction.stats.away.avgGoalsConceded !== undefined
+                        ? prediction.stats.away.avgGoalsConceded.toFixed(1)
+                        : "0.0"}
+                    </span>
+                  </div>
+                  <div className="stat-item">
+                    <span className="stat-label">Matchs analysés:</span>
+                    <span className="stat-value">
+                      {prediction.stats.away.matchesPlayed || 0}
+                    </span>
+                  </div>
+                </>
+              ) : (
+                <div className="no-data">Aucune donnée disponible</div>
+              )}
+            </div>
+
+            <div className="details-section">
+              <h4>Face à face</h4>
+              {prediction.stats && prediction.stats.h2h ? (
+                <>
+                  <div className="stat-item">
+                    <span className="stat-label">Victoires {homeTeam}:</span>
+                    <span className="stat-value">
+                      {prediction.stats.h2h.homeWins || 0}
+                    </span>
+                  </div>
+                  <div className="stat-item">
+                    <span className="stat-label">Victoires {awayTeam}:</span>
+                    <span className="stat-value">
+                      {prediction.stats.h2h.awayWins || 0}
+                    </span>
+                  </div>
+                  <div className="stat-item">
+                    <span className="stat-label">Matchs nuls:</span>
+                    <span className="stat-value">
+                      {prediction.stats.h2h.draws || 0}
+                    </span>
+                  </div>
+                  <div className="stat-item">
+                    <span className="stat-label">Total confrontations:</span>
+                    <span className="stat-value">
+                      {prediction.stats.h2h.matchesPlayed || 0}
+                    </span>
+                  </div>
+                </>
+              ) : (
+                <div className="no-data">
+                  Aucune confrontation directe disponible
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

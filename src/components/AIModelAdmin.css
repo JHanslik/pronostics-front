@@ -1,0 +1,208 @@
+.ai-model-admin {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.ai-model-admin h3 {
+  margin-top: 0;
+  color: #343a40;
+  font-size: 1.4rem;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #dee2e6;
+  padding-bottom: 10px;
+}
+
+.ai-model-admin h4 {
+  color: #495057;
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+
+.loading-spinner,
+.error-message,
+.no-models {
+  text-align: center;
+  padding: 20px;
+  color: #6c757d;
+  font-style: italic;
+}
+
+.error-message {
+  color: #e74c3c;
+}
+
+.admin-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.action-group {
+  background-color: white;
+  border-radius: 6px;
+  padding: 15px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.action-group p {
+  color: #6c757d;
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+}
+
+.action-button {
+  background-color: #4c6ef5;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 15px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  width: 100%;
+}
+
+.action-button:hover {
+  background-color: #3b5bdb;
+}
+
+.action-button:disabled {
+  background-color: #adb5bd;
+  cursor: not-allowed;
+}
+
+.action-button.fetch-data {
+  background-color: #20c997;
+}
+
+.action-button.fetch-data:hover {
+  background-color: #12b886;
+}
+
+.action-button.train-model {
+  background-color: #4c6ef5;
+}
+
+.action-button.train-model:hover {
+  background-color: #3b5bdb;
+}
+
+.model-type-selector {
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.model-type-selector label {
+  margin-right: 10px;
+  font-size: 0.9rem;
+  color: #495057;
+}
+
+.model-type-selector select {
+  flex-grow: 1;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ced4da;
+  background-color: white;
+  font-size: 0.9rem;
+}
+
+.models-list {
+  background-color: white;
+  border-radius: 6px;
+  padding: 15px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.models-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  font-size: 0.9rem;
+}
+
+.models-table th,
+.models-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.models-table th {
+  background-color: #f8f9fa;
+  color: #495057;
+  font-weight: 600;
+}
+
+.models-table tr:last-child td {
+  border-bottom: none;
+}
+
+.models-table tr.active-model {
+  background-color: #f1f8ff;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.status-badge.active {
+  background-color: #d3f9d8;
+  color: #2b8a3e;
+}
+
+.status-badge.inactive {
+  background-color: #ffe3e3;
+  color: #c92a2a;
+}
+
+.toggle-button {
+  padding: 6px 10px;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.toggle-button.activate {
+  background-color: #d3f9d8;
+  color: #2b8a3e;
+}
+
+.toggle-button.activate:hover {
+  background-color: #b2f2bb;
+}
+
+.toggle-button.deactivate {
+  background-color: #ffe3e3;
+  color: #c92a2a;
+}
+
+.toggle-button.deactivate:hover {
+  background-color: #ffc9c9;
+}
+
+@media (max-width: 768px) {
+  .admin-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .models-table {
+    font-size: 0.8rem;
+  }
+
+  .models-table th,
+  .models-table td {
+    padding: 8px 10px;
+  }
+}
