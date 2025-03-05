@@ -15,6 +15,11 @@ const predictionService = {
     const response = await api.get(`/pronostics/match/${matchId}`);
     return response.data;
   },
+
+  processMatchPredictions: async (matchId) => {
+    const response = await api.post("/pronostics/process", { matchId });
+    return response.data;
+  },
 };
 
 export default predictionService;

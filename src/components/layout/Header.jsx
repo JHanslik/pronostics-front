@@ -4,6 +4,7 @@ import authService from "../../services/authService";
 
 function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [username, setUsername] = useState("");
   const [points, setPoints] = useState(0);
   const navigate = useNavigate();
@@ -14,10 +15,12 @@ function Header() {
       const user = authService.getCurrentUser();
       if (user) {
         setIsLoggedIn(true);
+        setIsAdmin(user.role === "admin");
         setUsername(user.username);
         setPoints(user.points || 0);
       } else {
         setIsLoggedIn(false);
+        setIsAdmin(false);
         setUsername("");
         setPoints(0);
       }
@@ -40,6 +43,7 @@ function Header() {
   const handleLogout = () => {
     authService.logout();
     setIsLoggedIn(false);
+    setIsAdmin(false);
     setUsername("");
     setPoints(0);
     navigate("/");
@@ -56,8 +60,23 @@ function Header() {
             <Link to="/">Accueil</Link>
           </li>
           <li>
+            <Link to="/past-matches">Matchs passés</Link>
+          </li>
+          <li>
             <Link to="/leaderboard">Classement</Link>
           </li>
+
+          {isAdmin && (
+            <li className="dropdown admin-dropdown">
+              <button className="dropdown-toggle admin-toggle">
+                Administration <span className="arrow">▼</span>
+              </button>
+              <div className="dropdown-menu">
+                <Link to="/admin/matches">Gérer les matchs</Link>
+                <Link to="/admin/pronostics">Valider les pronostics</Link>
+              </div>
+            </li>
+          )}
 
           {isLoggedIn ? (
             <>

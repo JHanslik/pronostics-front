@@ -9,9 +9,12 @@ import MatchDetail from "./pages/MatchDetail";
 import Profile from "./pages/Profile";
 import Leaderboard from "./pages/Leaderboard";
 import MyPredictions from "./pages/MyPredictions";
+import AdminPronostics from "./pages/AdminPronostics";
+import AdminMatches from "./pages/AdminMatches";
 import NotFound from "./pages/NotFound";
 import authService from "./services/authService";
 import "./App.css";
+import PastMatches from "./pages/PastMatches";
 
 function App() {
   useEffect(() => {
@@ -55,6 +58,9 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/my-predictions" element={<MyPredictions />} />
+            <Route path="/past-matches" element={<PastMatches />} />
+            <Route path="/admin/pronostics" element={<AdminPronostics />} />
+            <Route path="/admin/matches" element={<AdminMatches />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
