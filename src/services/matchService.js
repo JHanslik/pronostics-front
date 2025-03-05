@@ -16,8 +16,23 @@ const matchService = {
     return response.data;
   },
 
+  getFinishedMatchesToProcess: async () => {
+    const response = await api.get("/matches/finished/to-process");
+    return response.data;
+  },
+
+  getProcessedMatches: async () => {
+    const response = await api.get("/matches/processed");
+    return response.data;
+  },
+
   updateMatchResult: async (matchId, resultData) => {
     const response = await api.put(`/matches/${matchId}/result`, resultData);
+    return response.data;
+  },
+
+  markMatchAsProcessed: async (matchId) => {
+    const response = await api.put(`/matches/${matchId}/mark-processed`, {});
     return response.data;
   },
 

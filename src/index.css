@@ -1133,3 +1133,57 @@ body {
 .sync-btn::before {
   content: "🔄";
 }
+
+/* Styles pour les onglets dans la page admin pronostics */
+.admin-pronostics-page .tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #eee;
+}
+
+.admin-pronostics-page .tab-btn {
+  padding: 0.75rem 1.5rem;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  font-size: 1rem;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.admin-pronostics-page .tab-btn:hover {
+  color: var(--primary-color);
+}
+
+.admin-pronostics-page .tab-btn.active {
+  color: var(--primary-color);
+  border-bottom-color: var(--primary-color);
+  font-weight: 500;
+}
+
+/* Styles pour les matchs traités */
+.admin-match-card.processed {
+  border-left-color: #27ae60;
+}
+
+.processed-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.processed-badge {
+  background-color: #27ae60;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+.processed-date {
+  font-size: 0.8rem;
+  color: #7f8c8d;
+}
