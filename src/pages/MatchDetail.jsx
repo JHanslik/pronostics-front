@@ -4,6 +4,7 @@ import matchService from "../services/matchService";
 import authService from "../services/authService";
 import predictionService from "../services/predictionService";
 import userService from "../services/userService";
+import AIPrediction from "../components/AIPrediction";
 
 function MatchDetail() {
   const { id } = useParams();
@@ -117,6 +118,8 @@ function MatchDetail() {
             <p>Statut: {match.status || "À venir"}</p>
           </div>
         </div>
+
+        <AIPrediction matchId={match._id} />
 
         <div className="prediction-section">
           <h2>Faire un pronostic</h2>

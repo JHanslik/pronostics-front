@@ -1214,3 +1214,300 @@ p .match-time {
   color: #666;
   font-style: italic;
 }
+
+/* Styles pour le composant de prédiction IA */
+.ai-prediction {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 20px 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.ai-prediction h3 {
+  margin-top: 0;
+  color: #333;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+}
+
+.ai-prediction h3::before {
+  content: "🤖";
+  margin-right: 8px;
+}
+
+.prediction-probabilities {
+  margin: 15px 0;
+}
+
+.probability-bar {
+  display: flex;
+  height: 30px;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 5px;
+}
+
+.probability-bar div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 0.9rem;
+  transition: width 0.5s ease;
+}
+
+.probability-bar .home-win {
+  background-color: #4caf50;
+}
+
+.probability-bar .draw {
+  background-color: #ff9800;
+}
+
+.probability-bar .away-win {
+  background-color: #2196f3;
+}
+
+.prediction-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.prediction-details {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+}
+
+.predicted-score {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+
+.prediction-result {
+  margin-bottom: 10px;
+}
+
+.confidence {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.data-quality {
+  margin-top: 15px;
+}
+
+.quality-indicator {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.quality-bar {
+  height: 8px;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.quality-fill {
+  height: 100%;
+  background-color: #4caf50;
+  transition: width 0.5s ease;
+}
+
+.quality-indicator span {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.toggle-details-btn {
+  background-color: transparent;
+  border: none;
+  color: #2196f3;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-top: 15px;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.toggle-details-btn:hover {
+  color: #0b7dda;
+}
+
+.prediction-stats {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+}
+
+.stats-section {
+  margin-bottom: 20px;
+}
+
+.stats-section h4 {
+  margin-bottom: 10px;
+  font-size: 1rem;
+  color: #333;
+}
+
+.recent-matches,
+.h2h-matches {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.recent-match,
+.h2h-match {
+  display: grid;
+  grid-template-columns: 80px 1fr 60px 40px;
+  align-items: center;
+  padding: 8px;
+  background-color: #fff;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
+.match-date {
+  color: #666;
+}
+
+.match-teams {
+  font-weight: 500;
+}
+
+.match-score {
+  text-align: center;
+}
+
+.match-result {
+  text-align: center;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+.match-result.win {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.match-result.draw {
+  background-color: #fff3e0;
+  color: #ef6c00;
+}
+
+.match-result.loss {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+.match-result.home {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.match-result.away {
+  background-color: #e3f2fd;
+  color: #1565c0;
+}
+
+.match-result.draw {
+  background-color: #fff3e0;
+  color: #ef6c00;
+}
+
+.no-data {
+  color: #999;
+  font-style: italic;
+  text-align: center;
+  padding: 10px;
+}
+
+.stats-summary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.team-stats {
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 4px;
+}
+
+.team-stats h4 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: #333;
+  font-size: 1rem;
+}
+
+.team-stats p {
+  margin: 5px 0;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.prediction-disclaimer {
+  margin-top: 15px;
+  color: #999;
+  font-size: 0.8rem;
+  font-style: italic;
+}
+
+.ai-prediction.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+  color: #666;
+}
+
+.ai-prediction.loading::after {
+  content: "";
+  width: 20px;
+  height: 20px;
+  margin-left: 10px;
+  border: 3px solid #ddd;
+  border-top: 3px solid #2196f3;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.ai-prediction.error {
+  color: #d32f2f;
+  padding: 15px;
+  text-align: center;
+}
+
+/* Styles pour les écrans plus petits */
+@media (max-width: 768px) {
+  .recent-match,
+  .h2h-match {
+    grid-template-columns: 70px 1fr 50px 40px;
+    font-size: 0.8rem;
+  }
+
+  .stats-summary {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+}
