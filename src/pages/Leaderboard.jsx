@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import api from "../services/api";
+import userService from "../services/userService";
 
 function Leaderboard() {
   const [users, setUsers] = useState([]);
@@ -12,8 +12,9 @@ function Leaderboard() {
     // Récupération du classement depuis l'API
     const fetchLeaderboard = async () => {
       try {
-        const response = await api.get("/users/leaderboard");
-        setUsers(response.data);
+        setLoading(true);
+        const data = await userService.getLeaderboard();
+        setUsers(data);
         setLoading(false);
       } catch (err) {
         setError("Erreur lors du chargement du classement");
@@ -34,7 +35,7 @@ function Leaderboard() {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   if (loading) return <div>Chargement du classement...</div>;
-  if (error) return <div>Erreur: {error}</div>;
+  if (error) return <div className="error-message">{error}</div>;
   if (users.length === 0) return <div>Aucun utilisateur trouvé</div>;
 
   return (
@@ -66,13 +67,7 @@ function Leaderboard() {
                 <td className="points">{user.points}</td>
                 <td>{user.winCount || 0}</td>
                 <td>{user.totalPredictions || 0}</td>
-                <td>
-                  {user.totalPredictions > 0
-                    ? `${Math.round(
-                        ((user.winCount || 0) / user.totalPredictions) * 100
-                      )}%`
-                    : "0%"}
-                </td>
+                <td>{user.successRate || 0}%</td>
               </tr>
             ))}
           </tbody>
