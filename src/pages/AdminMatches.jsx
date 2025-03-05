@@ -9,6 +9,7 @@ function AdminMatches() {
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
   const [activeTab, setActiveTab] = useState("scheduled"); // scheduled, finished
+  const [syncLoading, setSyncLoading] = useState(false); // Nouvel état pour le chargement de la synchronisation
   const navigate = useNavigate();
 
   // État pour le formulaire de modification
@@ -52,6 +53,32 @@ function AdminMatches() {
       setError("Erreur lors du chargement des matchs");
       setLoading(false);
       console.error(err);
+    }
+  };
+
+  // Nouvelle fonction pour synchroniser les matchs
+  const handleSyncMatches = async () => {
+    try {
+      setSyncLoading(true);
+      setError(null);
+
+      const result = await matchService.syncMatches();
+
+      setSuccessMessage(
+        `Synchronisation réussie ! ${result.message || "Matchs mis à jour."}`
+      );
+      setTimeout(() => setSuccessMessage(""), 5000);
+
+      // Rafraîchir la liste des matchs
+      fetchMatches();
+    } catch (err) {
+      setError(
+        err.response?.data?.message ||
+          "Erreur lors de la synchronisation des matchs"
+      );
+      console.error(err);
+    } finally {
+      setSyncLoading(false);
     }
   };
 
@@ -131,6 +158,19 @@ function AdminMatches() {
       {successMessage && (
         <div className="success-message">{successMessage}</div>
       )}
+
+      {/* Bouton de synchronisation */}
+      <div className="admin-actions">
+        <button
+          className="sync-btn"
+          onClick={handleSyncMatches}
+          disabled={syncLoading}
+        >
+          {syncLoading
+            ? "Synchronisation en cours..."
+            : "Synchroniser les matchs"}
+        </button>
+      </div>
 
       <div className="tabs">
         <button

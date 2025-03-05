@@ -20,6 +20,11 @@ const matchService = {
     const response = await api.put(`/matches/${matchId}/result`, resultData);
     return response.data;
   },
+
+  syncMatches: async () => {
+    const response = await api.get("/matches/sync");
+    return response.data;
+  },
 };
 
 export default matchService;
