@@ -12,6 +12,7 @@ import MyPredictions from "./pages/MyPredictions";
 import AdminPronostics from "./pages/AdminPronostics";
 import AdminMatches from "./pages/AdminMatches";
 import NotFound from "./pages/NotFound";
+import Statistics from "./pages/Statistics";
 import authService from "./services/authService";
 import "./App.css";
 import PastMatches from "./pages/PastMatches";
@@ -59,6 +60,7 @@ function App() {
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/my-predictions" element={<MyPredictions />} />
             <Route path="/past-matches" element={<PastMatches />} />
+            <Route path="/statistics" element={<Statistics />} />
             <Route path="/admin/pronostics" element={<AdminPronostics />} />
             <Route path="/admin/matches" element={<AdminMatches />} />
             <Route path="*" element={<NotFound />} />

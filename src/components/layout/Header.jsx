@@ -65,6 +65,9 @@ function Header() {
           <li>
             <Link to="/leaderboard">Classement</Link>
           </li>
+          <li>
+            <Link to="/statistics">Statistiques</Link>
+          </li>
 
           {isAdmin && (
             <li className="dropdown admin-dropdown">
